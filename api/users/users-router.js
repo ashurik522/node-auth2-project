@@ -48,4 +48,11 @@ router.get("/:user_id", restricted, only('admin'), (req, res, next) => { // done
     .catch(next);
 });
 
+router.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    message: err.message,
+    stack: err.stack
+  })
+})
+
 module.exports = router;
