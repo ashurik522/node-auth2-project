@@ -47,6 +47,9 @@ const checkUsernameExists = (req, res, next) => {
 
 
 const validateRoleName = (req, res, next) => {
+  
+
+  
   /*
     If the role_name in the body is valid, set req.role_name to be the trimmed string and proceed.
 
