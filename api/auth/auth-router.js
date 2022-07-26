@@ -6,11 +6,12 @@ const Users = require('../users/users-model')
 const jwt = require('jsonwebtoken')
 
 router.post("/register", validateRoleName, (req, res, next) => {
-  const { username, password, role_name } = req.body
+  const { username, password } = req.body
+  const { role_name } = req
 
   const hash = bcrypt.hashSync(password, 8)
 
-  Users.add({username, password: hash, role_name: role_name || 'student'})
+  Users.add({username, password: hash, role_name})
     .then((user) => {
       res.status(201).json(user)
     })
@@ -37,7 +38,7 @@ router.post("/login", checkUsernameExists, async (req, res, next) => {
     const [user] = await Users.findBy({username});
     if(user && bcrypt.compareSync(password, user.password)){
       const token = genJwt(user)
-      res.status(200).json({ message: `${username} is back!`, token})
+      res.status(200).json({token,  message: `${username} is back!`})
     } else {
       res.status(401).json({ message: 'invalid credentials'})
     }
